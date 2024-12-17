@@ -22,10 +22,22 @@
 
     h1 {
       color: #fff;
+      margin-top: 1px;
       margin-bottom: 30px;
-      font-size: 50px;
+      font-size: 20px;
+      font-weight: 400;
       font-family: Helvetica, Arial, sans-serif;
       text-shadow: 0 0 1px rgba(255, 255, 255, 0.8);
+    }
+    
+    /* 추가된 스타일: 로고 이미지 */
+    .logo {
+      width: 190px; /* 원하는 이미지 너비 */
+      height: auto; /* 비율 유지 */
+      margin-bottom: 0px; /* 제목과 간격 */
+      z-index: 1;
+      image-rendering: -webkit-optimize-contrast; /* 고품질 렌더링 */
+      image-rendering: crisp-edges;
     }
 
     /* 눈 내리는 효과 */
@@ -41,13 +53,14 @@
 
     .snowflake {
       position: absolute;
-      top: -10px;
+      top: -5px;
       background: white;
       border-radius: 50%;
-      opacity: 0.7;
-      filter: blur(2px);
+      opacity: 0.5;
+      filter: blur(3px);
       box-shadow: 0 0 8px 4px rgba(255, 255, 255, 0.5);
       animation: snowFall linear infinite;
+      animation-delay: -5s; /* 랜덤 시작점 설정 */
     }
 
     @keyframes snowFall {
@@ -171,11 +184,11 @@
       position: absolute;
       top: -20px; /* 위로 더 올림 */
       left: 50%;
-      width: 70px; /* 2배 크기 */
-      height: 70px; /* 2배 크기 */
+      width: 65px; /* 2배 크기 */
+      height: 65px; /* 2배 크기 */
       background: radial-gradient(circle, #de3667, #e35b82);
       border-radius: 50%;
-      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
       transform: translateX(-50%);
       transition: transform 0.2s ease-out;
       cursor: pointer;
@@ -197,6 +210,9 @@
 </head>
 <body>
   <div id="container"></div> <!-- 눈 내리는 효과 컨테이너 -->
+  
+  <!-- 로고 이미지 추가 -->
+  <img src="https://marun5.synology.me/images/LOLO.png" alt="Logo" class="logo">
 
   <h1> CATCH FIVE </h1>
 
@@ -287,7 +303,8 @@
         snowflake.className = "snowflake";
         snowflake.style.left = `${Math.random() * 100}vw`;
         snowflake.style.width = snowflake.style.height = `${Math.random() * 7 + 3}px`;
-        snowflake.style.animationDuration = `${Math.random() * 3 + 2}s`;
+        snowflake.style.animationDuration = `${Math.random() * 5 + 5}s`;
+        snowflake.style.animationDelay = `${Math.random() * -5}s`; // 랜덤 딜레이 추가
         container.appendChild(snowflake);
       }
     }
