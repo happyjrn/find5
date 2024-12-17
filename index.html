@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catch the Lucky 5 🎰</title>
+  <style>
+    /* 전체 배경 */
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      background: linear-gradient(to bottom, #001f3f, #003366);
+      font-family: Arial, sans-serif;
+      margin: 0;
+      overflow: hidden;
+    }
+    h1 {
+      color: #fff;
+      margin-bottom: 30px;
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+    }
+    .slot-container {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 40px; /* 기존 20px -> 40px (2배 증가) */
+    }
+    .slot {
+      width: 100px;
+      height: 160px;
+      border: 4px solid #ff6347;
+      border-radius: 10px;
+      background-color: #fff;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
+    }
+    .reel {
+      position: absolute;
+      top: -40px;
+      width: 100%;
+    }
+    .reel div {
+      height: 80px;
+      line-height: 80px;
+      font-size: 72px;
+      text-align: center;
+      font-weight: bold;
+      color: #ff4500;
+    }
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.6) 0%,
+        rgba(0, 0, 0, 0.3) 15%,
+        rgba(0, 0, 0, 0) 25%,
+        rgba(0, 0, 0, 0) 75%,
+        rgba(0, 0, 0, 0.3) 85%,
+        rgba(0, 0, 0, 0.6) 100%
+      );
+      z-index: 1;
+    }
+
+    /* 버튼 컨테이너 */
+    .button-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    /* 원형 버튼 (크기 0.8배로 조정) */
+    button {
+      margin: 0;
+      padding: 0;
+      width: 144px; /* 180px * 0.8 */
+      height: 144px; /* 180px * 0.8 */
+      font-size: 19.2px; /* 24px * 0.8 */
+      font-weight: bold;
+      cursor: pointer;
+      background-color: #ff6347;
+      color: white;
+      border: none;
+      border-radius: 50%; /* 원형 버튼 */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+      text-transform: uppercase;
+    }
+
+    button:hover {
+      background-color: #ff4500;
+    }
+
+    /* 눈 내리는 효과 */
+    #container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .snowflake {
+      position: absolute;
+      top: -10px;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.7;
+      filter: blur(2px);
+      box-shadow: 0 0 8px 4px rgba(255, 255, 255, 0.5);
+      animation: snowFall linear infinite;
+    }
+    @keyframes snowFall {
+      from {
+        transform: translateY(-10px);
+      }
+      to {
+        transform: translateY(100vh);
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Catch the Lucky 5 🎰</h1>
+  <div id="container"></div>
+  <div class="slot-container">
+    <div class="slot" id="slot1">
+      <div class="overlay"></div>
+      <div class="reel" id="reel1"></div>
+    </div>
+    <div class="slot" id="slot2">
+      <div class="overlay"></div>
+      <div class="reel" id="reel2"></div>
+    </div>
+    <div class="slot" id="slot3">
+      <div class="overlay"></div>
+      <div class="reel" id="reel3"></div>
+    </div>
+  </div>
+  <div class="button-container">
+    <button id="pushButton">Stop</button>
+    <button id="resetButton">Spin</button>
+  </div>
+  <div id="bonusMessage" style="color: #fff; margin-top: 20px; font-size: 18px;"></div>
+
+  <script>
+    const numbers = [...Array(10).keys()];
+    const reels = [
+      document.getElementById("reel1"),
+      document.getElementById("reel2"),
+      document.getElementById("reel3"),
+    ];
+    let stopOrder = 0;
+    let slotTimers = [null, null, null];
+
+    function initializeReels() {
+      stopOrder = 0;
+      reels.forEach((reel) => {
+        const content = numbers.concat(numbers, numbers);
+        reel.innerHTML = content.map((num) => `<div>${num}</div>`).join("");
+        reel.style.top = "-40px";
+      });
+    }
+
+    function startSlot() {
+      reels.forEach((reel, index) => {
+        slotTimers[index] = setInterval(() => {
+          const currentTop = parseInt(reel.style.top, 10) - 15;
+          reel.style.top = `${currentTop % (80 * 10)}px`;
+        }, 33);
+      });
+    }
+
+    function stopSlot() {
+      if (stopOrder >= reels.length) return;
+      clearInterval(slotTimers[stopOrder]);
+      const reel = reels[stopOrder];
+      const currentTop = parseInt(reel.style.top, 10);
+      const remainder = (currentTop + 40) % 80;
+      reel.style.top = `${currentTop - remainder}px`;
+
+      if (stopOrder === reels.length - 1) checkBonus();
+      stopOrder++;
+    }
+
+    function checkBonus() {
+      const values = reels.map(reel => parseInt(reel.style.top) / -80 % 10);
+      if (values.every(val => val === 7)) {
+        document.getElementById("bonusMessage").innerText = "🎅 Bonus! Santa's Gift Unlocked! 🎁";
+      } else {
+        document.getElementById("bonusMessage").innerText = "";
+      }
+    }
+
+    function resetSlot() {
+      reels.forEach((_, index) => clearInterval(slotTimers[index]));
+      document.getElementById("bonusMessage").innerText = "";
+      initializeReels();
+      startSlot();
+    }
+
+    // 눈 내리는 효과
+    function createSnowflakes() {
+      const container = document.getElementById("container");
+      for (let i = 0; i < 100; i++) {
+        const snowflake = document.createElement("div");
+        snowflake.className = "snowflake";
+        snowflake.style.left = `${Math.random() * 100}vw`;
+        snowflake.style.width = snowflake.style.height = `${Math.random() * 10 + 5}px`;
+        snowflake.style.animationDuration = `${Math.random() * 3 + 2}s`;
+        container.appendChild(snowflake);
+      }
+    }
+
+    document.getElementById("pushButton").addEventListener("click", stopSlot);
+    document.getElementById("resetButton").addEventListener("click", resetSlot);
+
+    createSnowflakes();
+    initializeReels();
+    startSlot();
+  </script>
+</body>
+</html>
