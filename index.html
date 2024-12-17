@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Catch the Lucky 5 🎰</title>
+  <title> CATCH FIVE </title>
   <style>
     /* 전체 배경 */
     body {
@@ -12,8 +12,10 @@
       align-items: center;
       flex-direction: column;
       height: 100vh;
-      background: linear-gradient(to bottom, #001f3f, #003366);
-      font-family: Arial, sans-serif;
+      background: linear-gradient(to top, #8a7cb8, #8b7bbd, #7162a8, #5c4e99);
+      font-family: Helvetica, Arial, sans-serif;
+      letter-spacing: 1px;
+      font-stretch: expanded;
       margin: 0;
       overflow: hidden;
     }
@@ -21,7 +23,9 @@
     h1 {
       color: #fff;
       margin-bottom: 30px;
-      text-shadow: 0 0 3px rgba(255, 255, 255, 0.8);
+      font-size: 50px;
+      font-family: Helvetica, Arial, sans-serif;
+      text-shadow: 0 0 1px rgba(255, 255, 255, 0.8);
     }
 
     /* 눈 내리는 효과 */
@@ -66,14 +70,15 @@
       display: flex;
       gap: 10px;
       margin-right: 20px;
+      margin-bottom: 20px;
     }
 
     .slot {
-      width: 100px;
+      width: 85px;
       height: 160px;
-      border: 4px solid #ff6347;
+      border: 2px solid #5e4d9d;
       border-radius: 10px;
-      background-color: #fff;
+      background-color: rgba(255, 255, 255, 0.9);
       overflow: hidden;
       position: relative;
       box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
@@ -81,17 +86,17 @@
 
     .reel {
       position: absolute;
-      top: -40px;
+      top: -35px;
       width: 100%;
     }
 
     .reel div {
-      height: 80px;
-      line-height: 80px;
-      font-size: 72px;
+      height: 70px;
+      line-height: 70px;
+      font-size: 50px;
       text-align: center;
       font-weight: bold;
-      color: #ff4500;
+      color: #5e4d9d;
     }
 
     /* 위아래 그라데이션 효과 */
@@ -104,12 +109,12 @@
       pointer-events: none;
       background: linear-gradient(
         to bottom,
-        rgba(0, 0, 0, 0.6) 0%,
-        rgba(0, 0, 0, 0.3) 15%,
-        rgba(0, 0, 0, 0) 25%,
-        rgba(0, 0, 0, 0) 75%,
-        rgba(0, 0, 0, 0.3) 85%,
-        rgba(0, 0, 0, 0.6) 100%
+        rgba(58, 40, 122, 0.9) 0%,
+        rgba(58, 40, 122, 0.5) 15%,
+        rgba(58, 40, 122, 0) 25%,
+        rgba(58, 40, 122, 0) 75%,
+        rgba(58, 40, 122, 0.5) 85%,
+        rgba(58, 40, 122, 0.9) 100%
       );
       z-index: 1;
     }
@@ -123,15 +128,21 @@
     }
 
     button {
-      width: 144px;
-      height: 144px;
+       margin: 0;
+       padding: 0;
+      width: 360px;
+      height: 80px;
       font-size: 19.2px;
       font-weight: bold;
       cursor: pointer;
-      background-color: #ff6347;
+      background-color: #5e4d9d;
       color: white;
       border: none;
-      border-radius: 50%;
+      border-radius: 15px;
+      box-shadow: 
+    inset 0 2px 5px rgba(255, 255, 255, 0.6), /* 내부 하이라이트 */
+    0 4px 8px rgba(0, 0, 0, 0.3), /* 외부 그림자 */
+    0 6px 15px rgba(0, 0, 0, 0.2); /* 깊은 그림자 */
       display: flex;
       justify-content: center;
       align-items: center;
@@ -140,7 +151,7 @@
     }
 
     button:hover {
-      background-color: #ff4500;
+      background-color: #5e4d9d;
     }
 
     /* 레버 */
@@ -149,8 +160,8 @@
       justify-content: center;
       align-items: flex-start;
       width: 50px;
-      height: 150px;
-      background: linear-gradient(to bottom, #ccc, #888);
+      height: 165px;
+      background: linear-gradient(to bottom, #ccc, #999999);
       border-radius: 15px;
       box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.3);
       position: relative;
@@ -160,9 +171,9 @@
       position: absolute;
       top: -20px; /* 위로 더 올림 */
       left: 50%;
-      width: 80px; /* 2배 크기 */
-      height: 80px; /* 2배 크기 */
-      background: radial-gradient(circle, #d33, #800);
+      width: 70px; /* 2배 크기 */
+      height: 70px; /* 2배 크기 */
+      background: radial-gradient(circle, #de3667, #e35b82);
       border-radius: 50%;
       box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
       transform: translateX(-50%);
@@ -187,7 +198,7 @@
 <body>
   <div id="container"></div> <!-- 눈 내리는 효과 컨테이너 -->
 
-  <h1>Catch the Lucky 5 🎰</h1>
+  <h1> CATCH FIVE </h1>
 
   <div class="container">
     <!-- 슬롯 컨테이너 -->
@@ -238,9 +249,9 @@
     function startSlot() {
       reels.forEach((reel, index) => {
         slotTimers[index] = setInterval(() => {
-          const currentTop = parseInt(reel.style.top, 10) - 15;
-          reel.style.top = `${currentTop % (80 * 10)}px`;
-        }, 33);
+          const currentTop = parseInt(reel.style.top, 10) - 24;
+          reel.style.top = `${currentTop % (70 * 5)}px`;
+        }, 30);
       });
     }
 
@@ -249,7 +260,7 @@
       clearInterval(slotTimers[stopOrder]);
       const reel = reels[stopOrder];
       const currentTop = parseInt(reel.style.top, 10);
-      const remainder = (currentTop + 40) % 80;
+      const remainder = (currentTop + 24) % 70;
       reel.style.top = `${currentTop - remainder}px`;
       stopOrder++;
     }
@@ -275,7 +286,7 @@
         const snowflake = document.createElement("div");
         snowflake.className = "snowflake";
         snowflake.style.left = `${Math.random() * 100}vw`;
-        snowflake.style.width = snowflake.style.height = `${Math.random() * 10 + 5}px`;
+        snowflake.style.width = snowflake.style.height = `${Math.random() * 7 + 3}px`;
         snowflake.style.animationDuration = `${Math.random() * 3 + 2}s`;
         container.appendChild(snowflake);
       }
