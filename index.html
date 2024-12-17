@@ -211,6 +211,10 @@
 <body>
   <div id="container"></div> <!-- 눈 내리는 효과 컨테이너 -->
   
+  <!-- 오디오 파일 추가 -->
+  <audio id="stopSound" src="https://marun5.synology.me/images/button.wav"></audio>
+  <audio id="spinSound" src="https://marun5.synology.me/images/reset.wav"></audio>
+  
   <!-- 로고 이미지 추가 -->
   <img src="https://marun5.synology.me/images/LOLO.png" alt="Logo" class="logo">
 
@@ -253,6 +257,9 @@
     let stopOrder = 0;
     let slotTimers = [null, null, null];
 
+    const stopSound = document.getElementById("stopSound");
+    const spinSound = document.getElementById("spinSound");
+    
     function initializeReels() {
       stopOrder = 0;
       reels.forEach(reel => {
@@ -273,7 +280,10 @@
 
     function stopSlot() {
       if (stopOrder >= reels.length) return;
+      stopSound.currentTime = 0;
+      stopSound.play();
       clearInterval(slotTimers[stopOrder]);
+      
       const reel = reels[stopOrder];
       const currentTop = parseInt(reel.style.top, 10);
       const remainder = (currentTop + 24) % 70;
@@ -290,6 +300,9 @@
     document.getElementById("pushButton").addEventListener("click", stopSlot);
 
     document.getElementById("lever").addEventListener("click", function () {
+      spinSound.currentTime = 0; // 소리를 처음부터 재생
+      spinSound.play(); // Spin 소리 재생
+      
       this.classList.add("clicked");
       setTimeout(() => this.classList.remove("clicked"), 300);
       resetSlot();
