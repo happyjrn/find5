@@ -87,7 +87,7 @@
     .slot {
       width: 85px;
       height: 160px;
-      border: 2px solid #5e4d9d;
+      border: 0 solid #a052b5; /* 테두리 두께 0으로 설정 */ /* 테두리 색상 수정 */
       border-radius: 10px;
       background-color: rgba(255, 255, 255, 0.9);
       overflow: hidden;
@@ -146,18 +146,28 @@
       font-size: 19.2px;
       font-weight: bold;
       cursor: pointer;
-      background-color: #5e4d9d;
+      background-color: #5e4d9d; /* STOP 버튼 기본 색상 */
       color: white;
       border: none;
       border-radius: 15px;
       box-shadow: 
-        inset 0 2px 5px rgba(255, 255, 255, 0.6), /* 내부 하이라이트 */
-        0 4px 8px rgba(0, 0, 0, 0.3), /* 외부 그림자 */
-        0 6px 15px rgba(0, 0, 0, 0.2); /* 깊은 그림자 */
+        inset 0 -3px 0 #4a3c7e, /* 내부 어두운 그림자 */
+        0 6px 0 #362b64, /* 하단 그림자 */
+        0 8px 15px rgba(0, 0, 0, 0.3); /* 깊은 외부 그림자 */
       display: flex;
       justify-content: center;
       align-items: center;
       text-transform: uppercase;
+      -webkit-tap-highlight-color: transparent; /* 터치 음영 제거 */
+      touch-action: manipulation; /* 터치 동작 개선 */
+    }
+
+    button:active {
+      background-color: #4e3d8d; /* STOP 버튼 클릭 시 색상 */ /* 터치 시 색상 약간 진하게 */
+      box-shadow: 
+        inset 0 -3px 0 #3a2f6a, /* 내부 어두운 그림자 */
+        0 6px 0 #2a204b, /* 하단 그림자 */
+        0 8px 15px rgba(0, 0, 0, 0.5); /* 더 깊은 외부 그림자 */
     }
 
     button:hover {
@@ -179,30 +189,42 @@
 
     .lever {
       position: absolute;
-      top: -20px; /* 위로 더 올림 */
+      top: -20px;
       left: 50%;
-      width: 60px; /* 원래 크기 복원 */
-      height: 60px; /* 원래 크기 복원 */
-      background: radial-gradient(circle, #de3667, #e35b82);
+      width: 60px;
+      height: 60px;
+      background: radial-gradient(circle at 30% 30%, #de4d8c, #e05e89); /* SPIN 버튼 초기 색상 */ /* Spin 버튼 색상 변경 */
       border-radius: 50%;
-      box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
+      box-shadow: 
+        inset -3px -3px 6px rgba(255, 255, 255, 0.2), /* 내부 하이라이트 약화 */
+        3px 3px 6px rgba(0, 0, 0, 0.1); /* 외부 그림자 약화 */
       transform: translateX(-50%);
       transition: transform 0.2s ease-out;
       cursor: pointer;
 
-      /* 텍스트 스타일 */
       display: flex;
       justify-content: center;
       align-items: center;
       color: white;
-      font-size: 12px; /* 원래 크기 복원 */
+      font-size: 14px;
       font-weight: bold;
       text-transform: uppercase;
+      -webkit-tap-highlight-color: transparent; /* 터치 음영 제거 */
+      touch-action: manipulation; /* 터치 동작 개선 */
+    }
+
+    .lever:active {
+      background: #b9e371; /* SPIN 버튼 클릭 후 색상 */ /* 터치 시 색상 변경 */
     }
 
     .lever.clicked {
       transform: translateX(-50%) translateY(100px);
     }
+  button, .lever {
+      -webkit-tap-highlight-color: transparent; /* 터치 음영 제거 */
+      touch-action: manipulation; /* 터치 동작 개선 */
+    }
+
   </style>
 </head>
 <body>
@@ -293,7 +315,19 @@
       startSlot();
     }
 
-    document.getElementById("pushButton").addEventListener("click", stopSlot);
+    const pushButton = document.getElementById("pushButton");
+
+    pushButton.addEventListener("mousedown", () => {
+      pushButton.style.backgroundColor = "#4e3d8d"; // 터치 시 색상 변경
+      pushButton.style.boxShadow = "inset 0 -3px 0 #3a2f6a, 0 6px 0 #2a204b, 0 8px 15px rgba(0, 0, 0, 0.5)"; // 터치 시 그림자 변경
+    });
+
+    pushButton.addEventListener("mouseup", () => {
+      pushButton.style.backgroundColor = "#5e4d9d"; // 기본 색상 복원
+      pushButton.style.boxShadow = "inset 0 -3px 0 #4a3c7e, 0 6px 0 #362b64, 0 8px 15px rgba(0, 0, 0, 0.3)"; // 기본 그림자 복원
+    });
+
+    pushButton.addEventListener("click", stopSlot);
 
     document.getElementById("lever").addEventListener("click", function () {
       spinSound.currentTime = 0; // 소리를 처음부터 재생
