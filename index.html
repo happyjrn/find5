@@ -288,7 +288,7 @@
     function startSlot() {
       reels.forEach((reel, index) => {
         slotTimers[index] = setInterval(() => {
-          const currentTop = parseInt(reel.style.top, 10) - 24;
+          const currentTop = parseInt(reel.style.top, 10) - 15;
           reel.style.top = `${currentTop % (70 * 5)}px`;
         }, 30);
       });
