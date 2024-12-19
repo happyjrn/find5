@@ -196,14 +196,13 @@
       transition: transform 0.2s ease-out;
       cursor: pointer;
 
-      /* 텍스트 스타일 */
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: white;
-      font-size: 18px;
-      font-weight: bold;
-      text-transform: uppercase;
+      /* 포커스 및 음영 제거 */
+      outline: none;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      touch-action: manipulation;
+      border: none; /* 기본 테두리 제거 */
+      background: none; /* 배경에 대해 브라우저 기본값 제거 */
     }
 
     .lever.clicked {
@@ -260,9 +259,6 @@
     let stopOrder = 0;
     let slotTimers = [null, null, null];
 
-    const stopSound = document.getElementById("stopSound");
-    const spinSound = document.getElementById("spinSound");
-    
     function initializeReels() {
       stopOrder = 0;
       reels.forEach(reel => {
@@ -283,8 +279,14 @@
 
     function stopSlot() {
       if (stopOrder >= reels.length) return;
+
+      // 새로운 오디오 객체 생성 및 재생
+      const stopSound = new Audio("https://marun5.synology.me/images/button.mp3");
       stopSound.currentTime = 0;
-      stopSound.play();
+      stopSound.play().catch((error) => {
+        console.error("Audio playback failed:", error);
+      });
+
       clearInterval(slotTimers[stopOrder]);
       const reel = reels[stopOrder];
       const currentTop = parseInt(reel.style.top, 10);
@@ -302,9 +304,13 @@
     document.getElementById("pushButton").addEventListener("click", stopSlot);
 
     document.getElementById("lever").addEventListener("click", function () {
-      spinSound.currentTime = 0; // 소리를 처음부터 재생
-      spinSound.play(); // Spin 소리 재생
-      
+      // 새로운 오디오 객체 생성 및 재생
+      const spinSound = new Audio("https://marun5.synology.me/images/reset.mp3");
+      spinSound.currentTime = 0;
+      spinSound.play().catch((error) => {
+        console.error("Audio playback failed:", error);
+      });
+
       this.classList.add("clicked");
       setTimeout(() => this.classList.remove("clicked"), 300);
       resetSlot();
