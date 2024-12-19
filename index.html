@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title> CATCH THE FIVE </title>
+  <title>CATCH THE FIVE</title>
   <style>
     /* 전체 배경 */
     body {
@@ -29,15 +29,13 @@
       font-family: Helvetica, Arial, sans-serif;
       text-shadow: 0 0 1px rgba(255, 255, 255, 0.8);
     }
-    
+
     /* 추가된 스타일: 로고 이미지 */
     .logo {
-      width: 190px; /* 원하는 이미지 너비 */
+      width: 300px; /* 화면에 표시될 크기 */
       height: auto; /* 비율 유지 */
-      margin-bottom: 0px; /* 제목과 간격 */
-      z-index: 1;
-      image-rendering: -webkit-optimize-contrast; /* 고품질 렌더링 */
-      image-rendering: crisp-edges;
+      max-width: 100%; /* 부모 컨테이너 초과 방지 */
+      image-rendering: auto; /* 부드럽고 선명한 렌더링 */
     }
 
     /* 눈 내리는 효과 */
@@ -141,8 +139,8 @@
     }
 
     button {
-       margin: 0;
-       padding: 0;
+      margin: 0;
+      padding: 0;
       width: 360px;
       height: 80px;
       font-size: 19.2px;
@@ -153,13 +151,12 @@
       border: none;
       border-radius: 15px;
       box-shadow: 
-    inset 0 2px 5px rgba(255, 255, 255, 0.6), /* 내부 하이라이트 */
-    0 4px 8px rgba(0, 0, 0, 0.3), /* 외부 그림자 */
-    0 6px 15px rgba(0, 0, 0, 0.2); /* 깊은 그림자 */
+        inset 0 2px 5px rgba(255, 255, 255, 0.6), /* 내부 하이라이트 */
+        0 4px 8px rgba(0, 0, 0, 0.3), /* 외부 그림자 */
+        0 6px 15px rgba(0, 0, 0, 0.2); /* 깊은 그림자 */
       display: flex;
       justify-content: center;
       align-items: center;
-      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
       text-transform: uppercase;
     }
 
@@ -212,13 +209,13 @@
   <div id="container"></div> <!-- 눈 내리는 효과 컨테이너 -->
   
   <!-- 오디오 파일 추가 -->
-  <audio id="stopSound" src="https://marun5.synology.me/images/button.wav"></audio>
-  <audio id="spinSound" src="https://marun5.synology.me/images/reset.wav"></audio>
+  <audio id="stopSound" src="https://marun5.synology.me/images/button.mp3"></audio>
+  <audio id="spinSound" src="https://marun5.synology.me/images/reset.mp3"></audio>
   
   <!-- 로고 이미지 추가 -->
   <img src="https://marun5.synology.me/images/LOLO.png" alt="Logo" class="logo">
 
-  <h1> CATCH THE FIVE </h1>
+  <h1>CATCH THE FIVE</h1>
 
   <div class="container">
     <!-- 슬롯 컨테이너 -->
